@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <!--
+        https://medium.com/@noufel.gouirhate/build-a-simple-chat-app-with-node-js-and-socket-io-ea716c093088xc
+        https://hmh.engineering/experimenting-with-apache-kafka-and-nodejs-5c0604211196
+        https://www.sitepoint.com/using-redis-node-js/
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script>
+        function initSocket() {
+            //socket is global
+            dash = 0;
+            socket = io.connect();
+            alert("connected");
+        }
+    </script>
+    <script>
+        function startConv() {
+            if (dash != 0) {
+                breakl
+            }
+            dash = 1;
+            var tr = document.getElementById('openConversations').insertRow();
+            //var cStart = tr.insertCell(0);
+            var cCity = tr.insertCell(0);
+            //var cTopic = tr.insertCell(2);
+            var cSituation = tr.insertCell(1);
+            var cLanguage = tr.insertCell(2);
+            var cGender = tr.insertCell(3);
+            var cAge = tr.insertCell(4);
+            var cEnd = tr.insertCell(5);
+
+            cCity.innerHTML =
+                "<select><option value='jerusalem'>ירושלים</option><option value='naaria'>נהריה</option><option value='haifa'>חיפה</option><option value='telAviv'>תל אביב</option><option value='ashdod'>אשדוד</option><option value='Ashkelon'>אשקלון</option><option value='beerSheva'>באר שבע</option></select>";
+            cSituation
+                .innerHTML =
+                "<select><option value='Emergency'>חירום</option><option value='Emergency routine'>שגרת חירום</option><option value='relaxation'>רגיעה</option></select>";
+            cLanguage
+                .innerHTML =
+                "<select><option value='hebrew'>עברית</option><option value='english'>אנגלית</option><option value='amharic'>אמהרית</option><option value='russian'>רוסית</option><option value='arabic'>ערבית</option><option value='thai'>תאילנדית</option></select>";
+            cAge
+                .innerHTML = "<input type='number' min='0' max='120'/>";
+            cGender.innerHTML =
+                "<select><option value='male'>גבר</option><option value='female'>אישה</option></select>";
+            cEnd.innerHTML = "<button onclick='reportEndCall(this.parentNode.parentNode)'>קבל חיזוי</button>";
+            // var totalCalls = parseInt(document.getElementById("total").value) || 0;
+            // document.getElementById("total").value = (++totalCalls) + "";
+        }
+
+        function reportEndCall(row) {
+            var e = document.getElementById("select");
+            var message = {};
+            //message.id = row.cells[0].getElementsByTagName('div')[0].id;
+            message.city = row.cells[0].getElementsByTagName('select')[0].value;
+            message.Situation = row.cells[1].getElementsByTagName('select')[0].value;
+            message.language = row.cells[2].getElementsByTagName('select')[0].value;
+            message.gender = row.cells[3].getElementsByTagName('select')[0].value;
+            message.age = (row.cells[4].getElementsByTagName('input')[0].value || 18);
+
+            socket.emit("MsgBigMl", message);
+            deleteRow(row);
+            dash = 0;
+            getPredict();
+
+        }
+
+        function deleteRow(row) {
+            var i = row.rowIndex;
+            document.getElementById('openConversations').deleteRow(i);
+        }
+
+        function getPredict() {
+            socket.on("predict", (msg) => {
+                alert('prediction is :' + msg);
+            });
+        }
+    </script>
+</head>
+
+<body onload="initSocket()">
+    הכנס פרמטרים וקבל חיזוי עבור קטגוריית שיחה
+    &nbsp;
+    <hr>
+    <input type="button" onclick="startConv()" value="prediction" />
+    <table id="openConversations" border="1" style="background-color: burlywood;;">
+        <tr>
+            <th>City</th>
+            <th>Situation</th>
+            <th>Language</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>End</th>
+        </tr>
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://gurayyarar.github.io/AdminBSBMaterialDesign/pages/charts/chartjs.html -->
+<html class="chrome"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Viewer</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Favicon-->
+    <script src="/socket.io/socket.io.js"></script>
+   
+    <script>
+      const socket = io();
+      //alert("connect")
+    </script>
+
+</head>
+
+<body class="theme-red" >
+        <input type="hidden" name="smname" id="smname" />
+            <div class="row clearfix">
+                <!-- Line Chart -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4>CALLS ON HOLD</h4>
+                        </div>
+                        <div class="body"><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;" src="./ChartJS _ Bootstrap Based Admin Template - Material Design_files/saved_resource.html"></iframe>
+                            <canvas id="line_chart" height="220" width="440" ></canvas>
+                        </div>
+                        <script type = "text/javascript">
+                           
+                            const ytemp = [];
+                            const xtemp = [];
+                            
+                            let myChart1 = document.getElementById('line_chart').getContext('2d');
+                        
+                            // Global Options
+                            Chart.defaults.global.defaultFontFamily = 'Lato';
+                            Chart.defaults.global.defaultFontSize = 16;
+                            Chart.defaults.global.defaultFontColor = 'black';
+                    
+
+                            let massPopChart1 = new Chart(myChart1, {
+                              type:'line', 
+                              
+                              data:{
+                                labels:xtemp,
+                                
+                                datasets:[
+                                  {
+                                  data:ytemp,
+                                  backgroundColor:['rgba(255, 99, 132, 0.6)'],
+                                  borderWidth:1
+                                }
+                                ]
+                              },
+                              options:{
+                                title:{
+                                  display:true,
+                                 
+                                  fontSize:25
+                                },
+                                legend:{
+                                  display:false,
+                                  position:'right',
+                                  labels:{
+                                    fontColor:'#000'
+                                  }
+                                },
+                                layout:{
+                                  padding:{
+                                    left:50,
+                                    right:0,
+                                    bottom:0,
+                                    top:0
+                                  }
+                                },
+                                tooltips:{
+                                  enabled:true
+                                }
+                              }
+                            });
+                          
+                            socket.on('toclient' , function(msg , msg2){
+                             xtemp.push(msg2);
+                             ytemp.push(msg);
+                             massPopChart1.update();
+                            });
+                          </script>
+                    </div>
+                </div>
+                
+                <!-- #END# Line Chart -->  
+              <!-- Bar Chart -->
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                       <h4>NUMBER OF CALLS IN EACH CITY</h4>
+                    </div>
+                    <div class="body"><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;" src="./ChartJS _ Bootstrap Based Admin Template - Material Design_files/saved_resource(1).html"></iframe>
+                        <canvas id="bar_chart" height="220" width="440" style="display: block; width: 440px; height: 220px;"></canvas>
+                    </div>
+                    <script>
+                        let myChart2 = document.getElementById('bar_chart').getContext('2d');
+                        // Global Options
+                        Chart.defaults.global.defaultFontFamily = 'Lato';
+                        Chart.defaults.global.defaultFontSize = 16;
+                        Chart.defaults.global.defaultFontColor = 'black';
+                        
+                        let massPopChart2 = new Chart(myChart2, {
+                          type:'bar', 
+                          data:{
+                            labels:['jerusalem','naaria','haifa','telAviv','ashdod','Ashkelon','beerSheva'],
+                            datasets:[{
+                              label:'CALLS IN EACH CITY',
+                              data:[1,1,1,1,1,1,1],
+                              
+                              backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(25, 32, 79, 0.6)'
+                              ],
+                              borderWidth:1,
+                              borderColor:'#777',
+                              hoverBorderWidth:1,
+                              hoverBorderColor:'#000'
+                            }]
+                          },
+                          options:{
+                            title:{
+                              display:true,
+                             
+                              fontSize:25
+                            },
+                            legend:{
+                              display:false,
+                              position:'right',
+                              labels:{
+                                fontColor:'#000'
+                              }
+                            },
+                            layout:{
+                              padding:{
+                                left:50,
+                                right:0,
+                                bottom:0,
+                                top:0
+                              }
+                            },
+                            tooltips:{
+                              enabled:true
+                            }
+                          }
+                        });
+                        socket.on('toclient2' , function(msg){
+                         massPopChart2.data.datasets[0].data= msg;
+                         massPopChart2.update();
+                        });
+                      </script>
+                </div>
+            </div>
+            
+              </div>  
+                
+
+            <div class="row clearfix">
+                <!-- Radar Chart -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4>DISTRIBUTION OF CALLS BY TYPE OF REQUEST</h4>
+                        </div>
+                        <div class="body"><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;" src="./ChartJS _ Bootstrap Based Admin Template - Material Design_files/saved_resource(2).html"></iframe>
+                            <canvas id="doughnut_chart" height="220" width="440" style="display: block; width: 440px; height: 220px;"></canvas>
+                        </div>
+                        <script>
+                            let myChart = document.getElementById('doughnut_chart').getContext('2d');
+                        
+                            // Global Options
+                            Chart.defaults.defaultFontFamily = 'Lato';
+                            Chart.defaults.defaultFontSize = 16;
+                            Chart.defaults.defaultFontColor = 'white';
+                         
+                            let massPopChart = new Chart(myChart, {
+                              type:'doughnut', 
+                              data:{
+                                labels:['Medical','drugs','food','water','shelter','information','evacuation'],
+                                datasets:[{
+                                  label:'CALLS BY TYPE OF REQUEST',
+                                  data:[0,0,0,0,0,0,0],
+                                  
+                                  backgroundColor:[
+                                    'rgba(255, 99, 132, 0.6)',
+                                    'rgba(54, 162, 235, 0.6)',
+                                    'rgba(255, 206, 86, 0.6)',
+                                    'rgba(75, 192, 192, 0.6)',
+                                    'rgba(153, 102, 255, 0.6)',
+                                    'rgba(255, 159, 64, 0.6)',
+                                    'rgba(25, 32, 79, 0.6)'
+                                  ],
+                                  borderWidth:1,
+                                  borderColor:'#777',
+                                  hoverBorderWidth:1,
+                                  hoverBorderColor:'#000'
+                                }]
+                              },
+                              options:{
+                                title:{
+                                  display:true,
+                                  
+                                  fontSize:25
+                                },
+                                legend:{
+                                  display:true,
+                                  position:'right',
+                                  labels:{
+                                    fontColor:'#000'
+                                  }
+                                },
+                                layout:{
+                                  padding:{
+                                    left:50,
+                                    right:0,
+                                    bottom:0,
+                                    top:0
+                                  }
+                                },
+                                tooltips:{
+                                  enabled:true
+                                }
+                              }
+                            });
+                            socket.on('toclient3' , function(msg){
+                             massPopChart.data.datasets[0].data= msg;
+                             massPopChart.update();
+                            });
+
+                          </script>
+                    </div>
+                </div>
+                <!-- #END# Radar Chart -->
+                
+                
+                
+                
+                
+                
+                <!-- Pie Chart -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4>DISTRIBUTION OF CALLS BY LANGUAGE</h4>
+                        </div>
+                        <div class="body"><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;" src="./ChartJS _ Bootstrap Based Admin Template - Material Design_files/saved_resource(3).html"></iframe>
+                            <canvas id="pie_chart" height="220" width="440" style="display: block; width: 440px; height: 220px;"></canvas>
+                        </div>
+                        <script>
+                            let myChart4 = document.getElementById('pie_chart').getContext('2d');
+                        
+                            // Global Options
+                            Chart.defaults.defaultFontFamily = 'Lato';
+                            Chart.defaults.defaultFontSize = 16;
+                            Chart.defaults.defaultFontColor = 'white';
+                            
+                            let massPopChart4 = new Chart(myChart4, {
+                              type:'pie', 
+                              data:{
+                                labels:['hebrew','english','amharic','russian','arabic','thai'],
+                                datasets:[{
+                                  label:'CALLS BY LANGUAGE',
+                                  data:[0,0,0,0,0,0],
+                                  
+                                  backgroundColor:[
+                                    'rgba(255, 99, 132, 0.6)',
+                                    'rgba(54, 162, 235, 0.6)',
+                                    'rgba(255, 206, 86, 0.6)',
+                                    'rgba(75, 192, 192, 0.6)',
+                                    'rgba(153, 102, 255, 0.6)',
+                                    'rgba(255, 159, 64, 0.6)',
+                                    
+                                  ],
+                                  borderWidth:1,
+                                  borderColor:'#777',
+                                  hoverBorderWidth:1,
+                                  hoverBorderColor:'#000'
+                                }]
+                              },
+                              options:{
+                                title:{
+                                  display:true,
+                                  
+                                  fontSize:25
+                                },
+                                legend:{
+                                  display:true,
+                                  position:'right',
+                                  labels:{
+                                    fontColor:'#000'
+                                  }
+                                },
+                                layout:{
+                                  padding:{
+                                    left:50,
+                                    right:0,
+                                    bottom:0,
+                                    top:0
+                                  }
+                                },
+                                tooltips:{
+                                  enabled:true
+                                }
+                              }
+                            });
+                            socket.on('toclient4' , function(msg){
+                             massPopChart4.data.datasets[0].data= msg;
+                             massPopChart4.update();
+                            });
+                          </script>
+                    </div>
+                </div>
+                <!-- #END# Pie Chart -->
+            </div>
+        </div>
+    
+
+
+
+</body>
+</html>
