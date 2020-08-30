@@ -50,10 +50,10 @@ io.on("connection", (socket) => {
 
 server.listen(port, () => console.log(`app listening at http://localhost:${port}`));
 
-//connect to mongo , redis , and kafka consumer
+//connect to mongodb.com , redislabs , and kafka consumer
 const {MongoClient} = require('mongodb');
  
-const uri = "mongodb+srv://yc1470741:YC1470741@cluster0.sxkyw.mongodb.net/test";
+const uri = "your_uri";
 const client = new MongoClient(uri);
 
 // Connect to the MongoDB cluster
@@ -62,8 +62,8 @@ console.log(`Connected to mongoDB`);
 //redis 
 var redis = require('redis');
 const { Client } = require('node-rdkafka');
-var client2 = redis.createClient(14109, 'redis-14109.c2.eu-west-1-3.ec2.cloud.redislabs.com', {no_ready_check: true});
-client2.auth('qeFzvYxFzRBaBdHl3nlCSj3cY28f8Zi5', function (err) {
+var client2 = redis.createClient(port, endPoint, {no_ready_check: true});
+client2.auth(password, function (err) {
     if (err) {throw err;}
 });
 
@@ -83,18 +83,19 @@ var Kafka = require("node-rdkafka");
 const { json } = require('body-parser');
 const { Consumer } = require('kafka-node');
 
+//your cloudkarfka configuratin
 const kafkaConf = {
     "group.id": "cloudkarafka-example",
-    "metadata.broker.list": "rocket-01.srvs.cloudkafka.com:9094,rocket-02.srvs.cloudkafka.com:9094,rocket-03.srvs.cloudkafka.com:9094".split(","),
+    "metadata.broker.list": "your_list".split(","),
     "socket.keepalive.enable": true,
     "security.protocol": "SASL_SSL",
     "sasl.mechanisms": "SCRAM-SHA-256",
-    "sasl.username": "hvar3wup",
-    "sasl.password": "G4gJcoJQOa0tDEBBTJNgI8xZ5zCte_q4",
+    "sasl.username": "userName",
+    "sasl.password": "password",
     "debug": "generic,broker,security"
   };
   
-  const prefix = "hvar3wup-";
+  const prefix = "username-";
   const topic = `${prefix}test`;
   const consumer = new Kafka.KafkaConsumer(kafkaConf);
   consumer.connect();
@@ -117,7 +118,7 @@ const kafkaConf = {
     NumberOfCalls();
   });
 
-   //call function if kafka dosent work
+   //call function if cloudkarfka consumer delay 
    function consume(m){
     
     const result = client.db("CallCenter").collection("calls").insertOne(JSON.parse(m.toString()));
